@@ -51,7 +51,7 @@ public class BaseGun : MonoBehaviour
         time = 0;
         BaseBullet b = Instantiate<BaseBullet>(bullet);
         //if (FoxController.instance.facingRight)
-            b.Init(transform.position, transform.rotation.eulerAngles.z, FoxController.instance.facingRight);
+            b.Init(transform.position, transform.rotation.eulerAngles.z, FoxController.Instance.facingRight);
         //else
         //{
         //    Debug.Log(transform.rotation.eulerAngles.z);

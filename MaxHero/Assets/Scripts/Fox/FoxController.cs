@@ -4,20 +4,22 @@ using UnityEngine;
 
 public class FoxController : MonoBehaviour
 {
-    public static FoxController instance;
+    public static FoxController Instance;
     //Object
-    [SerializeField]
-    Rigidbody2D myBody;
+    
+    public Rigidbody2D myBody;
 
     [SerializeField]
     Animator myAnim;
 
-    [SerializeField]
-    FoxHp foxHp;
+    //[SerializeField]
+    //FoxHp foxHp;
 
     [SerializeField]
     GameObject gun;
 
+    [SerializeField]
+    GameObject effectDeath;
 
     //Public variables
     [SerializeField]
@@ -25,6 +27,7 @@ public class FoxController : MonoBehaviour
 
     //Private variables
     public bool facingRight;
+    public bool dead;
     int numJump;
 
     enum State
@@ -32,17 +35,18 @@ public class FoxController : MonoBehaviour
         Idle =0,
         Run = 1,
         Jump =2,
-        Crouch=3,
-        Climb =4
+        Hurt=3,
+        Climb =4,
+        Die=5
     }
 
     State state;
 
     private void Awake()
     {
-        if (instance == null)
+        if (Instance == null)
         {
-            instance = this;
+            Instance = this;
         }
     }
 
@@ -54,11 +58,16 @@ public class FoxController : MonoBehaviour
 
     void Update()
     {
-        CheckKey();
-        if (Input.GetKeyDown(KeyCode.C))
+        if (state!=State.Die)
         {
-            foxHp.AddDame(5);
+            CheckKey();
         }
+        if (Input.GetKeyDown(KeyCode.B))
+        {
+            FoxHp.Instance.AddHp(100);
+            ChangeState(State.Die);
+        }
+
     }
     
     void ChangeState(State st)
@@ -68,8 +77,8 @@ public class FoxController : MonoBehaviour
         {
 
             case State.Idle:
-                myAnim.SetBool(GameDefine.FOX_CLIMB, false);
-                myAnim.SetTrigger(GameDefine.FOX_IDLE);
+                myAnim.SetBool(GameDefine.ANIM_FOX_CLIMB, false);
+                myAnim.SetTrigger(GameDefine.ANIM_FOX_IDLE);
                 gun.SetActive(true);
                 GunManager.Instance.canShoot = true;
                 break;
@@ -85,34 +94,65 @@ public class FoxController : MonoBehaviour
                 myBody.gravityScale = 0;
                 gun.SetActive(false);
                 myBody.velocity = new Vector3(0, 0);
-                myAnim.SetFloat(GameDefine.FOX_VECY, 0);
-                myAnim.SetBool(GameDefine.FOX_CLIMB,true);
+                myAnim.SetFloat(GameDefine.ANIM_FOX_VECY, 0);
+                myAnim.SetBool(GameDefine.ANIM_FOX_CLIMB, true);
                 GunManager.Instance.canShoot = false;
                 break;
-            case State.Crouch:
+            case State.Hurt:
+                myAnim.SetTrigger(GameDefine.ANIM_FOX_HURT);
+                break;
+            case State.Die:
+                GameObject b = Instantiate<GameObject>(effectDeath);
+                b.transform.position = transform.position;
+                //Destroy(this.gameObject);
+                this.gameObject.SetActive(false);
+                dead = true;
                 break;
 
         }
         state = st;
     }  
 
+
+    //Death
+    public void Death()
+    {
+        ChangeState(State.Die);
+    }
+
+    //Collision
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.tag == GameDefine.TAG_GROUND)
         {
             numJump = 0;
             myBody.velocity = new Vector3(myBody.velocity.x,0);
+            if (myBody.velocity.x==0 && state != State.Hurt)
+            {
+                ChangeState(State.Idle);
+            }
         }
         if (collision.gameObject.tag == GameDefine.TAG_LADDER)
         {
             ChangeState(State.Climb);
+        }
+        if (collision.gameObject.tag == GameDefine.TAG_ENEMY)
+        {
+            ChangeState(State.Hurt);
+        }
+    }
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.tag == GameDefine.TAG_ENEMY)
+        {
+            ChangeState(State.Hurt);
         }
     }
     private void OnCollisionStay2D(Collision2D collision)
     {
         if (collision.gameObject.tag == GameDefine.TAG_LADDER)
         {
-                ChangeState(State.Climb);
+             ChangeState(State.Climb);
         }
     }
     private void OnCollisionExit2D(Collision2D collision)
@@ -124,23 +164,32 @@ public class FoxController : MonoBehaviour
         }
     }
 
+
+    //rigidbody
+
+    public void OnGravityScale()
+    {
+        myBody.gravityScale = 1;
+    }
+    public void OffGravityScale()
+    {
+        myBody.gravityScale = 0;
+    }
+
     //Input
     void CheckKey()
     {
-        CheckCrouch();
         if (state != State.Climb)
         {
             CheckVecY();
         }
-        if (state != State.Crouch)
+        CheckClimb();
+        CheckMove();
+        if (state != State.Climb)
         {
-            CheckClimb();
-            CheckMove();
-            if (state != State.Climb)
-            {
-                CheckJump();       
-            }        
-        }     
+            CheckJump();       
+        }        
+             
     }
     void CheckClimb()
     {
@@ -176,35 +225,11 @@ public class FoxController : MonoBehaviour
             ChangeState(State.Jump);
             
         }
-    }
-
-    
+    }  
     void CheckVecY()
     {
         myAnim.SetFloat("VecY", myBody.velocity.y);
-        //if (myBody.velocity.y > 0)
-        //{
-        //    myAnim.SetFlo("VecY", 1);
-        //}
-        //else if (myBody.velocity.y < 0)
-        //{
-        //    myAnim.SetInteger("VecY", -1);
-        //}
-        //else myAnim.SetInteger("VecY", 0);
-    }
-    void CheckCrouch()
-    {
-        if (Input.GetKeyDown(KeyCode.LeftShift))
-        {
-            myBody.velocity = new Vector3(0, 0);
-            myAnim.SetTrigger(GameDefine.FOX_CROUCH);
-            state = State.Crouch;
-        }
-        if (Input.GetKeyUp(KeyCode.LeftShift))
-        {
-            myAnim.SetTrigger(GameDefine.FOX_IDLE);
-            state = State.Idle;
-        }
+
     }
     void CheckMove()
     {

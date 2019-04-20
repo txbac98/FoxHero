@@ -12,9 +12,10 @@ GameObject:
   - component: {fileID: 2831419888056427549}
   - component: {fileID: 2831419888056427550}
   - component: {fileID: 2831419888056427551}
+  - component: {fileID: 861980728542203755}
   m_Layer: 0
   m_Name: Rocket Bullet
-  m_TagString: Untagged
+  m_TagString: Rocket Bullet
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -115,4 +116,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 15
+  damage: 5
   rg: {fileID: 2831419888056427550}
+--- !u!58 &861980728542203755
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2831419888056427544}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0.0054552555}
+  serializedVersion: 2
+  m_Radius: 0.29625392

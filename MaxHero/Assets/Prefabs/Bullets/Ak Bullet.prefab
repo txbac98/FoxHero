@@ -12,9 +12,10 @@ GameObject:
   - component: {fileID: 2865577931201799021}
   - component: {fileID: 2865577931201799018}
   - component: {fileID: 2865577931201799023}
+  - component: {fileID: 4241285152128178355}
   m_Layer: 0
   m_Name: Ak Bullet
-  m_TagString: Untagged
+  m_TagString: Ak Bullet
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -94,6 +95,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 20
+  damage: 1
   rg: {fileID: 2865577931201799023}
 --- !u!50 &2865577931201799023
 Rigidbody2D:
@@ -116,3 +118,29 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!61 &4241285152128178355
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2865577931201799019}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 4.3687806, y: -0.07413399}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.17967963, y: 0.50166833}
+    oldSize: {x: 13.638785, y: 13.638785}
+    newSize: {x: 12.8, y: 12.8}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 13.638785, y: 2.8499143}
+  m_EdgeRadius: 0

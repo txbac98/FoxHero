@@ -6,6 +6,13 @@ TagManager:
   tags:
   - Ground
   - Ladder
+  - Ak Bullet
+  - Rocket Bullet
+  - Enemy
+  - Box Camera
+  - Box
+  - Change Direction Enemy
+  - Change Direction Wood
   layers:
   - Default
   - TransparentFX

@@ -4,9 +4,11 @@ using UnityEngine;
 
 public class BaseBullet : MonoBehaviour
 {
-    public float speed;
+    [SerializeField]
+    float speed;
     Vector2 vec;
-    float damage;
+
+    public int damage;
 
     [SerializeField]
     Rigidbody2D rg;
@@ -45,5 +47,18 @@ public class BaseBullet : MonoBehaviour
 
         rg.velocity = vec;
     }
-
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.tag == GameDefine.TAG_ENEMY || collision.gameObject.tag == GameDefine.TAG_BOX)
+        {
+            Destroy(this.gameObject);
+        }
+    }
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if (collision.gameObject.tag == GameDefine.TAG_BOX_CAMERA)
+        {
+            Destroy(this.gameObject);
+        }
+    }
 }

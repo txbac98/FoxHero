@@ -34,7 +34,7 @@ public class Gun
         BaseBullet b = BulletManager.Instance.Spawn(this.id);
         if(b != null)
         {
-            b.Init(pos, angle, FoxController.instance.facingRight);
+            b.Init(pos, angle, FoxController.Instance.facingRight);
         }
     }
 }
