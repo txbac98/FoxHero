@@ -21,7 +21,7 @@ public class EagleEnemy : BaseEnemy
     Vector3 foxPos;
 
 
-    public override void Update()
+    void Update()
     {
         LookAtFox();
      
@@ -29,7 +29,7 @@ public class EagleEnemy : BaseEnemy
         {
             if (beingAttack)
             {
-                transform.position = Vector3.MoveTowards(transform.position, foxPos, 3 * speed * Time.deltaTime); //Tan cong (3,3)
+                transform.position = Vector3.MoveTowards(transform.position, foxPos, 4 * speed * Time.deltaTime); //Tan cong (3,3)
             }
             else transform.position += new Vector3(0.5f * speed * move * Time.deltaTime, speed * Time.deltaTime);  //Bay len khi danh xong (0,5,1)
 

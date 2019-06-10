@@ -9,6 +9,18 @@ EditorBuildSettings:
     path: 
     guid: 00000000000000000000000000000000
   - enabled: 1
-    path: Assets/Scenes/SampleScene.unity
-    guid: 7f75b8f0b781134478c04181e3cf1286
+    path: Assets/Scenes/Start.unity
+    guid: bd808e7f74567a545acd8fffbff77af5
+  - enabled: 1
+    path: Assets/Scenes/Map_1.unity
+    guid: 361479bacd44d964d9c3e5d4a7bb1241
+  - enabled: 1
+    path: Assets/Scenes/Map_2.unity
+    guid: 735004c90a7ef3c41b04552ee12fd264
+  - enabled: 1
+    path: Assets/Scenes/Map_3.unity
+    guid: ec4f8367d66173847ba46b8088f08b34
+  - enabled: 1
+    path: Assets/Scenes/Boss.unity
+    guid: 9072667728b64d74cb27530043a71beb
   m_configObjects: {}

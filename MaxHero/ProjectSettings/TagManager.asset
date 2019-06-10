@@ -13,6 +13,9 @@ TagManager:
   - Box
   - Change Direction Enemy
   - Change Direction Wood
+  - Touch Will Die
+  - Next Scene
+  - Player Bullet
   layers:
   - Default
   - TransparentFX
@@ -22,9 +25,9 @@ TagManager:
   - UI
   - 
   - 
-  - 
-  - 
-  - 
+  - Enemy
+  - Enemy Bullet
+  - Player Bullet
   - 
   - 
   - 

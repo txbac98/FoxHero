@@ -60,15 +60,29 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\batFlyBehaviour.cs" />
+    <Compile Include="Assets\BossAttackBehaviour.cs" />
+    <Compile Include="Assets\BossDass.cs" />
+    <Compile Include="Assets\BossDassBehaviour.cs" />
+    <Compile Include="Assets\BossFireBehaviour.cs" />
     <Compile Include="Assets\Scripts\Bullets\BaseBullet.cs" />
     <Compile Include="Assets\Scripts\Bullets\BulletManager.cs" />
     <Compile Include="Assets\Scripts\Camera\CameraFollow.cs" />
+    <Compile Include="Assets\Scripts\DontDestroy.cs" />
+    <Compile Include="Assets\Scripts\Door\Door.cs" />
     <Compile Include="Assets\Scripts\Effects\DestroyMe.cs" />
+    <Compile Include="Assets\Scripts\Enemis\Areabat.cs" />
     <Compile Include="Assets\Scripts\Enemis\AreaEagle.cs" />
+    <Compile Include="Assets\Scripts\Enemis\AreaMouse.cs" />
     <Compile Include="Assets\Scripts\Enemis\BaseEnemy.cs" />
+    <Compile Include="Assets\Scripts\Enemis\BatBullet.cs" />
+    <Compile Include="Assets\Scripts\Enemis\BatEnemy.cs" />
     <Compile Include="Assets\Scripts\Enemis\BeingAttack.cs" />
+    <Compile Include="Assets\Scripts\Enemis\Boss\Boss.cs" />
     <Compile Include="Assets\Scripts\Enemis\EagleEnemy.cs" />
     <Compile Include="Assets\Scripts\Enemis\FrogEnemy.cs" />
+    <Compile Include="Assets\Scripts\Enemis\GhostEnemy.cs" />
+    <Compile Include="Assets\Scripts\Enemis\GunArea.cs" />
     <Compile Include="Assets\Scripts\Enemis\GunStock.cs" />
     <Compile Include="Assets\Scripts\Enemis\GunStockBullet.cs" />
     <Compile Include="Assets\Scripts\Enemis\Hp.cs" />
@@ -76,20 +90,22 @@
     <Compile Include="Assets\Scripts\Enemis\TouchWillDie.cs" />
     <Compile Include="Assets\Scripts\Fox\FoxController.cs" />
     <Compile Include="Assets\Scripts\Fox\FoxHp.cs" />
+    <Compile Include="Assets\Scripts\Fox\FoxObject.cs" />
     <Compile Include="Assets\Scripts\GameDefine.cs" />
-    <Compile Include="Assets\Scripts\GamePlay.cs" />
+    <Compile Include="Assets\Scripts\GameManager.cs" />
     <Compile Include="Assets\Scripts\Guns\AKGun.cs" />
     <Compile Include="Assets\Scripts\Guns\BaseGun.cs" />
     <Compile Include="Assets\Scripts\Guns\Gun.cs" />
     <Compile Include="Assets\Scripts\Guns\GunManager.cs" />
     <Compile Include="Assets\Scripts\Guns\RocketGun.cs" />
-    <Compile Include="Assets\Scripts\Items\AkItem.cs" />
+    <Compile Include="Assets\Scripts\InputController.cs" />
     <Compile Include="Assets\Scripts\Items\Cherry.cs" />
+    <Compile Include="Assets\Scripts\Items\GunItem.cs" />
     <Compile Include="Assets\Scripts\Items\Item.cs" />
+    <Compile Include="Assets\Scripts\Items\KeyItem.cs" />
     <Compile Include="Assets\Scripts\Items\Sunduk.cs" />
     <Compile Include="Assets\Scripts\Items\Switch.cs" />
     <Compile Include="Assets\Scripts\Items\Wood.cs" />
-    <Compile Include="Assets\Scripts\Player\InputController.cs" />
     <Compile Include="Assets\Scripts\Test.cs" />
     <Reference Include="Unity.TextMeshPro.Editor">
       <HintPath>D:/Unity/Project/Thiet Ke Game/MaxHero/Library/ScriptAssemblies/Unity.TextMeshPro.Editor.dll</HintPath>

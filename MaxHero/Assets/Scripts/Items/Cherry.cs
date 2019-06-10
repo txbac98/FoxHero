@@ -9,6 +9,6 @@ public class Cherry : Item
 
     public override void EffectItem()
     {
-        FoxHp.Instance.AddHp(hpAdd);
+        FoxController.Instance.foxHp.AddHp(hpAdd);
     }
 }

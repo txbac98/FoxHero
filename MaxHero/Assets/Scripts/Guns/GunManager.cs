@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+
 [System.Serializable]
 public class GunIcon
 {
@@ -12,7 +14,7 @@ public class GunIcon
 
 public class GunManager : MonoBehaviour
 {
-    public static GunManager Instance;
+
     [SerializeField]
     Gun gun;
 
@@ -25,10 +27,9 @@ public class GunManager : MonoBehaviour
     public float timeDelay;
     public bool canShoot;
 
-    private void Awake()
-    {
-        GunManager.Instance = this;
-    }
+    [SerializeField]
+    Image bulletImage;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -40,17 +41,27 @@ public class GunManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.V))
+        if (Input.GetKeyDown(KeyCode.X))
         {
-            ChangeGun(0);
+            ChangeGun(1);
         }
-        else
-        {
-            if (Input.GetKeyDown(KeyCode.X))
-            {
-                ChangeGun(1);
-            }
-        }
+        //if (Input.GetKeyDown(KeyCode.V))
+        //{
+        //    ChangeGun(0);
+        //}
+        //else
+        //{
+        //    if (Input.GetKeyDown(KeyCode.X))
+        //    {
+        //        ChangeGun(1);
+        //    }
+        //}
+
+        if (bulletImage.fillAmount <= 0.1f) canShoot = false;
+        else canShoot = true;
+        bulletImage.fillAmount += 0.4f * Time.deltaTime;
+
+
     }
     public void RotationGun(float angle)
     {
@@ -71,6 +82,7 @@ public class GunManager : MonoBehaviour
                 if (time > timeDelay)
                 {
                     this.gun.Fire(this.transform.position);
+                    bulletImage.fillAmount -= 0.2f;
                     time = 0;
                 }
             }                  
@@ -78,6 +90,7 @@ public class GunManager : MonoBehaviour
     }
     public void ChangeGun(int ID)
     {
+        OnGun();
         this.gun = new Gun(gunIcons[ID].id, gunIcons[ID].timeDelay);
         //this.gun.RotationGun();
         this.sprGun.sprite = gunIcons[ID].spr;
@@ -100,5 +113,13 @@ public class GunManager : MonoBehaviour
         }
         return null;
     }
+    public void OnGun()
+    {
+        panelGun.SetActive(true);
+    }
 
+    public void OffGun()
+    {
+        panelGun.SetActive(false);
+    }
 }

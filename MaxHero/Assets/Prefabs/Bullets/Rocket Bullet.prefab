@@ -13,9 +13,9 @@ GameObject:
   - component: {fileID: 2831419888056427550}
   - component: {fileID: 2831419888056427551}
   - component: {fileID: 861980728542203755}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Rocket Bullet
-  m_TagString: Rocket Bullet
+  m_TagString: Player Bullet
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -28,8 +28,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2831419888056427544}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.5, y: 0.5, z: 1}
+  m_LocalPosition: {x: -1.217, y: 1.315, z: 0}
+  m_LocalScale: {x: 0.04, y: 0.04, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -71,7 +71,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 5
-  m_Sprite: {fileID: 21300000, guid: 472d3d19355bb384fac1fc15c5d6a53a, type: 3}
+  m_Sprite: {fileID: 21300000, guid: b9c8ab40b60c2d445ad093325cc95867, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -116,7 +116,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 15
-  damage: 5
+  damage: 1
   rg: {fileID: 2831419888056427550}
 --- !u!58 &861980728542203755
 CircleCollider2D:
@@ -131,6 +131,6 @@ CircleCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0.0054552555}
+  m_Offset: {x: -0.0000008940697, y: 0.005455315}
   serializedVersion: 2
-  m_Radius: 0.29625392
+  m_Radius: 3.5859933

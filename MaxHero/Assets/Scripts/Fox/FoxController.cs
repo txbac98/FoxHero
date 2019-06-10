@@ -12,11 +12,13 @@ public class FoxController : MonoBehaviour
     [SerializeField]
     Animator myAnim;
 
-    //[SerializeField]
-    //FoxHp foxHp;
+    [SerializeField]
+    public FoxHp foxHp;
 
     [SerializeField]
-    GameObject gun;
+    GameObject key;
+
+    public GunManager gunManager;
 
     [SerializeField]
     GameObject effectDeath;
@@ -27,16 +29,25 @@ public class FoxController : MonoBehaviour
 
     //Private variables
     public bool facingRight;
+
+    public bool haveKey;
+
     public bool dead;
+
+    public bool haveGun;
     int numJump;
+
+    float timeHurt;
 
     enum State
     {
+        None=-1,
         Idle =0,
         Run = 1,
         Jump =2,
         Hurt=3,
         Climb =4,
+        Fall=6,
         Die=5
     }
 
@@ -52,51 +63,76 @@ public class FoxController : MonoBehaviour
 
     void Start()
     {
+        state = State.None;
         numJump = 0; //max 2
         facingRight = true;
+        if (haveGun) gunManager.ChangeGun(1);
+        //StartCoroutine(AutoCheckKey());
     }
 
-    void Update()
+    IEnumerator AutoCheckKey()
     {
-        if (state!=State.Die)
+        yield return new WaitForSeconds(0);
+        if (state != State.Die)
         {
             CheckKey();
         }
-        if (Input.GetKeyDown(KeyCode.B))
+        StartCoroutine(AutoCheckKey());
+    }
+
+    void FixedUpdate()
+    {
+        
+    }
+    private void Update()
+    {
+        if (state != State.Die)
         {
-            FoxHp.Instance.AddHp(100);
-            ChangeState(State.Die);
+            CheckKey();
         }
 
+        if (state == State.Hurt)
+        {
+            timeHurt += Time.deltaTime;
+            if (timeHurt > 0.5f)
+            {
+                timeHurt = 0;
+                state = State.None;
+            }
+        }
+        else timeHurt = 0;
     }
-    
+
     void ChangeState(State st)
     {
-        //state = st;
         switch (st)
         {
-
             case State.Idle:
-                myAnim.SetBool(GameDefine.ANIM_FOX_CLIMB, false);
-                myAnim.SetTrigger(GameDefine.ANIM_FOX_IDLE);
-                gun.SetActive(true);
-                GunManager.Instance.canShoot = true;
+                //numJump = 0;
+                //myAnim.SetBool(GameDefine.ANIM_FOX_CLIMB, false);
+                myAnim.SetTrigger(GameDefine.ANIM_FOX_IDLE);  
+                myAnim.SetBool(GameDefine.ANIM_FOX_RUN, false);
                 break;
             case State.Run:
+                //myAnim.SetTrigger(GameDefine.ANIM_FOX_RUN);
+                myAnim.SetBool(GameDefine.ANIM_FOX_RUN, true);
+                //numJump = 0;
                 break;
             case State.Jump:
                 myBody.velocity = new Vector2(myBody.velocity.x, jumpHeight); //nhay
                 myAnim.SetTrigger("Jump");
+                myAnim.SetFloat("VecY", myBody.velocity.y);
                 //audioSource.PlayOneShot(jumpClip);
+                break;
+            case State.Fall:
+
                 break;
             case State.Climb:
                 myAnim.enabled = true;
                 myBody.gravityScale = 0;
-                gun.SetActive(false);
                 myBody.velocity = new Vector3(0, 0);
                 myAnim.SetFloat(GameDefine.ANIM_FOX_VECY, 0);
                 myAnim.SetBool(GameDefine.ANIM_FOX_CLIMB, true);
-                GunManager.Instance.canShoot = false;
                 break;
             case State.Hurt:
                 myAnim.SetTrigger(GameDefine.ANIM_FOX_HURT);
@@ -107,6 +143,7 @@ public class FoxController : MonoBehaviour
                 //Destroy(this.gameObject);
                 this.gameObject.SetActive(false);
                 dead = true;
+                
                 break;
 
         }
@@ -125,27 +162,35 @@ public class FoxController : MonoBehaviour
     {
         if (collision.gameObject.tag == GameDefine.TAG_GROUND)
         {
-            numJump = 0;
-            myBody.velocity = new Vector3(myBody.velocity.x,0);
-            if (myBody.velocity.x==0 && state != State.Hurt)
+            //if (collision.gameObject.transform.position.y < transform.position.y)
             {
-                ChangeState(State.Idle);
-            }
+                numJump = 0;
+                //myBody.velocity = new Vector3(myBody.velocity.x,0);
+                if (state != State.Idle && state!=State.Run)
+                {
+                    ChangeState(State.Idle);
+                }
+            }          
         }
         if (collision.gameObject.tag == GameDefine.TAG_LADDER)
         {
             ChangeState(State.Climb);
         }
-        if (collision.gameObject.tag == GameDefine.TAG_ENEMY)
+        if (collision.gameObject.tag == GameDefine.TAG_TOUCHWILL_DIE)
         {
-            ChangeState(State.Hurt);
+            foxHp.OnMaxHit();
+        }
+        if (collision.gameObject.tag == GameDefine.TAG_NEXT_SCENE)
+        {
+            GameManager.instance.NextScene();
         }
     }
-    private void OnTriggerEnter2D(Collider2D collision)
+    public void OnHit(int dama)
     {
-        if (collision.gameObject.tag == GameDefine.TAG_ENEMY)
+        if (state != State.Hurt)
         {
             ChangeState(State.Hurt);
+            foxHp.OnHit(dama);
         }
     }
     private void OnCollisionStay2D(Collision2D collision)
@@ -178,18 +223,10 @@ public class FoxController : MonoBehaviour
 
     //Input
     void CheckKey()
-    {
-        if (state != State.Climb)
-        {
-            CheckVecY();
-        }
-        CheckClimb();
+    {  
         CheckMove();
-        if (state != State.Climb)
-        {
-            CheckJump();       
-        }        
-             
+        CheckVecY();
+        CheckJump();
     }
     void CheckClimb()
     {
@@ -214,7 +251,7 @@ public class FoxController : MonoBehaviour
         //Nhay
         if (Input.GetKeyDown(KeyCode.W))
         {
-           Jump();
+           Jump();      
         }    
     }
     void Jump()
@@ -223,19 +260,27 @@ public class FoxController : MonoBehaviour
         {
             numJump++;
             ChangeState(State.Jump);
-            
         }
     }  
     void CheckVecY()
     {
         myAnim.SetFloat("VecY", myBody.velocity.y);
-
+        if (myBody.velocity.y < 0)
+        {
+            ChangeState(State.Fall);
+        }
     }
     void CheckMove()
     {
-        float move = Input.GetAxis("Horizontal"); //theo Edit/project setting/ input
-        myAnim.SetFloat("Speed", Mathf.Abs(move));  //dieu kien, bien truyen vao (trong Animator)
+        float move = 0;
+        move = Input.GetAxis("Horizontal"); //theo Edit/project setting/ input
+        //myAnim.SetFloat("Speed", Mathf.Abs(move));  //dieu kien, bien truyen vao (trong Animator)
+        if (move != 0f)
+            ChangeState(State.Run);
+        else if (state==State.Run)
+            ChangeState(State.Idle);
         myBody.velocity = new Vector2(move * maxSpeed, myBody.velocity.y); //di theo vector 
+
 
         if (move > 0 && !facingRight) //qua phai, mat trai
         {
@@ -244,7 +289,7 @@ public class FoxController : MonoBehaviour
         else if (move < 0 && facingRight) //qua trai, mat phai
         {
             flip();
-        }
+        }            
     }
     void  flip()
     {
@@ -252,5 +297,14 @@ public class FoxController : MonoBehaviour
         Vector3 theScale = transform.localScale; //Lay scale
         theScale.x *= -1;   //doi chieu
         transform.localScale = theScale;    //gan ve
+    }
+
+
+    //HP
+
+    public void OnKey()
+    {
+        haveKey = true;
+        key.SetActive(true);
     }
 }

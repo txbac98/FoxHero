@@ -8,7 +8,7 @@ public class TouchWillDie : MonoBehaviour
     {
         if (collision.gameObject.tag == GameDefine.TAG_PLAYER)
         {
-            FoxHp.Instance.OnMaxHit();
+            FoxController.Instance.OnHit(100);
         }
     }
 }

@@ -5,10 +5,10 @@ using UnityEngine;
 public class BaseEnemy : MonoBehaviour
 {
     [SerializeField]
-    Hp hp;
+    protected Hp hp;
 
     [SerializeField]
-    SpriteRenderer sprite;
+    protected SpriteRenderer sprite;
 
     public Rigidbody2D rg;
 
@@ -16,7 +16,7 @@ public class BaseEnemy : MonoBehaviour
     GameObject deathEffect;
 
     [SerializeField]
-    int dama;
+    public int dama;
 
     bool beingAttacked;
 
@@ -24,10 +24,7 @@ public class BaseEnemy : MonoBehaviour
 
     public int move;
 
-    [SerializeField]
-    bool onlyRocket;
 
-    
 
     // Start is called before the first frame update
     void Start()
@@ -48,7 +45,7 @@ public class BaseEnemy : MonoBehaviour
     }
     public virtual void Flip()
     {
-        rg.velocity = new Vector2(0,rg.velocity.y);
+        rg.velocity = new Vector2(-rg.velocity.x,rg.velocity.y);
         move *= -1;
         transform.localScale = new Vector3(-transform.localScale.x,transform.localScale.y);
     }
@@ -65,7 +62,7 @@ public class BaseEnemy : MonoBehaviour
         }
     }
 
-    void Death()
+    protected virtual void Death()
     {
         if (deathEffect != null)
         {
@@ -88,17 +85,15 @@ public class BaseEnemy : MonoBehaviour
         BeingAttacked();
         
     }
-    private void OnTriggerEnter2D(Collider2D collision)
+    virtual public void OnTriggerEnter2D(Collider2D collision)
     {
-        //Check vien dan
-        if (onlyRocket)
+
+        if (collision.gameObject.tag == GameDefine.TAG_PLAYER_BULLET)
         {
-            if (collision.gameObject.tag == GameDefine.TAG_ROCKET_BULLET)
-            {
                 OnHit(collision.gameObject.GetComponent<BaseBullet>().damage);
-            }
         }
-        else if (collision.gameObject.tag == GameDefine.TAG_AK_BULLET || collision.gameObject.tag == GameDefine.TAG_ROCKET_BULLET)
+        
+        if (collision.gameObject.tag == GameDefine.TAG_PLAYER_BULLET)
         {
             OnHit(collision.gameObject.GetComponent<BaseBullet>().damage);
         }
@@ -109,14 +104,14 @@ public class BaseEnemy : MonoBehaviour
         }
         if (collision.gameObject.tag == GameDefine.TAG_PLAYER)
         {
-            FoxHp.Instance.OnHit(dama);
+            FoxController.Instance.OnHit(dama);
         }
     }
-    private void OnCollisionEnter2D(Collision2D collision)
+    virtual public void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.tag == GameDefine.TAG_PLAYER)
+        if (collision.gameObject.tag == GameDefine.TAG_PLAYER && gameObject.tag !=GameDefine.TAG_BOX)
         {
-            FoxHp.Instance.OnHit(dama);
+            FoxController.Instance.OnHit(dama);
         }
     }
     private void BeingAttacked()

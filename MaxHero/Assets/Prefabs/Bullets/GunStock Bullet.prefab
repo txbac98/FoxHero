@@ -28,7 +28,7 @@ Transform:
   m_GameObject: {fileID: 491080824077138460}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0.01, y: -0.004, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.5, y: 0.5, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -69,9 +69,9 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 5
+  m_SortingOrder: 20
   m_Sprite: {fileID: 21300000, guid: 7906f277a5a1736478d249a3541c5c27, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.8769978, g: 1, b: 0, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -97,10 +97,9 @@ MonoBehaviour:
   sprite: {fileID: 0}
   rg: {fileID: 0}
   deathEffect: {fileID: 0}
-  dama: 10
+  dama: 4
   move: 0
-  onlyRocket: 0
-  speed: 1
+  speed: 0.6
 --- !u!58 &7622984913132248141
 CircleCollider2D:
   m_ObjectHideFlags: 0

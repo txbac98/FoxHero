@@ -11,16 +11,30 @@ public class GunStock : BaseEnemy
     float timeDelay;
 
     float time;
+    bool onSpawn;
 
     public override void Move()
     {
         base.Move();
-        time += Time.deltaTime;
-        if (time > timeDelay)
+        if (onSpawn)
         {
-            time = 0;
-            GunStockBullet b = Instantiate<GunStockBullet>(bullet);
-            b.transform.position = transform.position;
-        }
+            time += Time.deltaTime;
+            if (time > timeDelay)
+            {
+                time = 0;
+                GunStockBullet b = Instantiate<GunStockBullet>(bullet);
+                b.transform.position = transform.position;
+            }
+        }       
+    }
+
+    public void OnSpawn()
+    {
+        onSpawn = true;
+    }
+
+    public void OffSpawn()
+    {
+        onSpawn = false;
     }
 }
